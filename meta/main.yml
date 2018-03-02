@@ -1,0 +1,6 @@
+galaxy_info:
+  author: Lebedev Dmitry
+  email: lebedevdsl@gmail.com
+  description: installs/configures carbonapi daemon
+  min_ansible_version: 2.0
+dependencies: []

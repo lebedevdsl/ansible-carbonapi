@@ -1,0 +1,33 @@
+# Need to be URL, http or https
+zipper: "{{ carbonapi_zipper_url | default('http://localhost:8088') }}"
+# Listen address, should always include hostname or ip address and a port.
+listen: "{{ carbonapi_listen | default('localhost:8082') }}"
+# Max concurrent requests to CarbonZipper
+concurency: {{ carbonapi_concurency | default(20) }}
+cache:
+   # Type of caching. Valid: "mem", "memcache", "none"
+   type: "{{ carbonapi_cache_type | default('mem') }}"
+   # Cache limit in megabytes
+   size_mb: {{ carbonapi_cache_size_mb | default(0) }}
+   # Only used for memcache type. List of memcache servers
+   # memcacheServers: - 'localhost:11211'
+# Amount of CPUs to use. 0 - unlimited
+cpus: {{ carbonapi_cpus_limit | default(0) }}
+# Timezone, default - local
+tz: "{{ carbonapi_tz | default('')}}"
+# If 'true', carbonapi will send requests as is, with globs and braces
+# Otherwise for each request it will generate /metrics/find and then /render
+# individual metrics.
+# true - faster, but will cause carbonzipper to consume much more RAM.
+sendGlobsAsIs: {{ carbonapi_send_globals_as_is | default('false') }}
+graphite:
+    # Host:port where to send internal metrics
+    # Empty = disabled
+    host: "{{ carbonapi_graphite_host | default('localhost:2003') }}"
+    interval: "{{ carbonapi_graphite_interval | default('60s') }}"
+    prefix: "{{ carbonapi_graphite_prefix | default('carbon.api') }}"
+# Maximium idle connections to carbonzipper
+idleConnections: {{ carbonapi_idle_connections | default(10) }}
+pidFile: "{{ carbonapi_pidfile | default('') }}"
+# See https://github.com/go-graphite/carbonzipper/blob/master/example.conf#L70-L108 for format explanation
+logger: {{ carbonapi_logger }}

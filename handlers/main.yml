@@ -1,0 +1,4 @@
+---
+# handlers file for lebedevdsl.carbonapi
+- name: reload systemd
+  command: systemctl daemon-reload

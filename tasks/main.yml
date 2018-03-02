@@ -1,0 +1,32 @@
+---
+# tasks file for lebedevdsl.carbonapi
+- name: "Install package"
+  package:
+    name: "{{ carbonapi_package }}"
+    state: present
+
+- name: "Provide configuration"
+  template:
+    src: "templates/carbonapi.yaml.j2"
+    dest: "{{ carbonapi_config }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: "Provide systemd configuration"
+  template:
+    src: "templates/carbonapi.service.j2"
+    dest: "/usr/lib/systemd/system/carbonapi.service"
+    owner: root
+    group: root
+    mode: 0644
+  notify: "reload systemd"
+
+- name: "Reload systemd"
+  meta: flush_handlers
+
+- name: "Start service"
+  service:
+    name: carbonapi
+    state: started
+    enabled: true

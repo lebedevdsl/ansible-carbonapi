@@ -1,0 +1,23 @@
+---
+# defaults file for lebedevdsl.carbonapi
+carbonapi_package: carbonapi
+carbonapi_config: /etc/carbonapi/carbonapi.yaml
+
+carbonapi_zipper_url: 'http://localhost:8088'
+carbonapi_listen: 'localhost:8082'
+carbonapi_concurency: 20
+carbonapi_cache_type: 'mem'
+carbonapi_cache_size_mb: 0
+carbonapi_cpus_limit: 0
+carbonapi_send_globals_as_is: 'false'
+carbonapi_graphite_host: 'localhost:2003'
+carbonapi_graphite_interval: '60s'
+carbonapi_graphite_prefix: 'carbon.api'
+carbonapi_idle_connections: 10
+carbonapi_pidfile: ''
+
+carbonapi_logger:
+- logger: ""
+  file: "/var/log/carbon/carbonapi.log"
+  level: "debug"
+  encoding: "json"
