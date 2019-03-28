@@ -1,5 +1,5 @@
 # Need to be URL, http or https
-zipper: "{{ carbonapi_zipper_url | default('http://localhost:8088') }}"
+upstreams: {{ carbonapi_upstreams }}
 # Listen address, should always include hostname or ip address and a port.
 listen: "{{ carbonapi_listen | default('localhost:8082') }}"
 # Max concurrent requests to CarbonZipper

@@ -1,0 +1,22 @@
+[Unit]
+Description="Graphite API  written in Golang"
+Requires=docker.service
+
+[Service]
+ExecStartPre=/bin/sleep 1
+ExecStartPre=/usr/bin/docker pull {{ carbonapi_docker_registry + carbonapi_docker_image }}:{{ carbonapi_docker_image_tag }}
+ExecStart=/usr/bin/docker run --restart=always \
+                          --name={{ carbonapi_service_name }} \
+                          {% for port in carbonapi_docker_container_ports %}
+                          -p={{ port }} \
+                          {% endfor %}
+                          {% for vol in carbonapi_docker_container_volumes %}
+                          -v={{ vol }} \
+                          {% endfor %}
+                          {{ carbonapi_docker_registry + carbonapi_docker_image }}:{{ carbonapi_docker_image_tag }} /usr/bin/carbonapi -config {{ carbonapi_config_dir}}/carbonapi.yaml
+ExecStop=/usr/bin/docker stop {{ carbonapi_service_name }}
+ExecStopPost=/usr/bin/docker rm -f {{ carbonapi_service_name }}
+ExecReload=/usr/bin/docker restart {{ carbonapi_service_name }}
+
+[Install]
+WantedBy=multi-user.target

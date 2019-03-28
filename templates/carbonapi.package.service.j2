@@ -1,0 +1,11 @@
+[Unit]
+Description="Graphite API  written in Golang"
+Requires=docker.service
+
+[Service]
+ExecStart=/usr/bin/carbonapi -config {{ carbonapi_config_dir }}/carbonapi.yaml
+User={{ carbonapi_user }}
+Group={{ carbonapi_user }}
+
+[Install]
+WantedBy=multi-user.target

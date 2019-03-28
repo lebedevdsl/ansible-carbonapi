@@ -1,9 +1,25 @@
 ---
 # defaults file for lebedevdsl.carbonapi
-carbonapi_package: carbonapi
-carbonapi_config: /etc/carbonapi/carbonapi.yaml
+carbonapi_install_type: 'package'
+carbonapi_package: 'carbonapi'
+carbonapi_config_dir: '/etc/carbonapi'
+carbonapi_log_dir: '/var/log/carbonapi'
 
-carbonapi_zipper_url: 'http://localhost:8088'
+# docker installation specific config
+carbonapi_docker_registry: "localhost:5001/"
+carbonapi_docker_image: "carbonapi"
+carbonapi_docker_image_tag: "latest"
+carbonapi_docker_container_ports:
+  - "8082:8082"
+carbonapi_docker_container_volumes:
+  - "{{ carbonapi_config_dir }}:/etc/carbonapi"
+  - "{{ carbonapi_log_dir }}:/var/log/carbonapi"
+carbonapi_service_name: carbonapi
+
+
+carbonapi_upstreams:
+  backends:
+   - "http://localhost:9090"
 carbonapi_listen: 'localhost:8082'
 carbonapi_concurency: 20
 carbonapi_cache_type: 'mem'
@@ -18,6 +34,12 @@ carbonapi_pidfile: ''
 
 carbonapi_logger:
 - logger: ""
-  file: "/var/log/carbon/carbonapi.log"
-  level: "debug"
+  file: "{{ carbonapi_log_dir }}/carbonapi.log"
+  level: "info"
   encoding: "json"
+- logger: ""
+  file: "stdout"
+  level: "error"
+  encoding: "console"
+  encodingTime: "iso8601"
+  encodingDuration: "seconds"

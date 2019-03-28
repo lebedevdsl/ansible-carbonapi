@@ -4,19 +4,36 @@
   package:
     name: "{{ carbonapi_package }}"
     state: present
+  when: carbonapi_install_type and carbonapi_install_type == "package"
+
+- name: "Install package"
+  package:
+    name: "{{ carbonapi_package }}"
+    state: present
+  when: carbonapi_install_type and carbonapi_install_type == "package"
+
+- name: "Create directories"
+  file:
+    state: directory
+    mode: 0755
+    dest: "{{ item }}"
+  with_items:
+    - "{{ carbonapi_config_dir }}"
+    - "{{ carbonapi_log_dir }}"
 
 - name: "Provide configuration"
   template:
     src: "templates/carbonapi.yaml.j2"
-    dest: "{{ carbonapi_config }}"
+    dest: "{{ carbonapi_config_dir }}/carbonapi.yaml"
     owner: root
     group: root
     mode: 0644
+  notify: "restart service carbonapi"
 
 - name: "Provide systemd configuration"
   template:
-    src: "templates/carbonapi.service.j2"
-    dest: "/usr/lib/systemd/system/carbonapi.service"
+    src: "templates/carbonapi.{{ carbonapi_install_type }}.service.j2"
+    dest: "/etc/systemd/system/carbonapi.service"
     owner: root
     group: root
     mode: 0644
